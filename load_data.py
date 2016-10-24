@@ -23,7 +23,7 @@ test = pd.read_csv(os.path.join(DATA_DIR, 'boites_medicaments_test.csv'),
 
 train[SOURCE] = TRAIN
 test[SOURCE] = TEST
-BIG = pd.concat([train, test], axis=0)
+BIG = pd.concat([train, test], ignore_index=True)
 
 print "TRAIN", train.shape
 print "TEST ", test.shape

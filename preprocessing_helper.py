@@ -38,6 +38,22 @@ def get_unique_noconst(df, verbose=False):
     
     return df_unique_noconst
 
+
+def get_numeric_nonnumeric_cols(df):
+    """
+    Method returns two lists with numeric and nonnumeric colum names
+    """
+    num_cols = []
+    nonnum_cols = []
+    type_groups = df.columns.to_series().groupby(df.dtypes)
+    for key in type_groups.groups:
+        if np.issubdtype(key, np.number):
+            num_cols.extend(type_groups.get_group(key).values)
+        else:
+            nonnum_cols.extend(type_groups.get_group(key).values)
+    
+    return num_cols, nonnum_cols
+    
             
 def split_series_values(series, splitter=','):
     """
