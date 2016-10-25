@@ -3,6 +3,7 @@
     Helper methods to preprocess data : cleaning, feature engineering
     
 """
+import re
 
 import numpy as np
 import pandas as pd
@@ -53,15 +54,28 @@ def get_numeric_nonnumeric_cols(df):
             nonnum_cols.extend(type_groups.get_group(key).values)
     
     return num_cols, nonnum_cols
-    
+
             
-def split_series_values(series, splitter=','):
+def split_series_values(series, splitter=',', modifiers=[]):
     """
     Method returns a pd.Series of splitted input values given as pd.Series
     Input should be non-numerical
     For example, ['a', 'a,b', 'b', 'a,b,c'] -> ['a', 'a', 'b', 'b', 'a', 'b', 'c']
+    
+    :param modifiers: is a list of regexp and replacing string, e.g[[regexp, replaceValue], [regexp, replaceValue], ...]
+    which is applied on input series before splitting
     """
-    res = series.apply(lambda val: val.split(splitter)).values
+    
+    lm1 = lambda v: re.sub(r'\s+', ' ', v)
+    lm2 = lambda val: val.split(splitter)
+    
+    if len(modifiers) > 0:
+        for mod in modifiers:
+            mlm = lambda v: re.sub(mod[0], mod[1], v)
+            series = series.apply(mlm)
+        res = series.apply(lm1).apply(lm2).values
+    else:
+        res = series.apply(lm1).apply(lm2).values
     ret = []
     for a in res:
         ret.extend(a)
@@ -104,3 +118,5 @@ def get_unique_col_values(df, display_nb_cols=10):
             row.extend([""]*(max_nb_cols - len(row)))
         out_df.iloc[i] = row
     return out_df
+
+
