@@ -82,7 +82,7 @@ def split_series_values(series, splitter=',', modifiers=[]):
     return pd.Series(ret)    
     
 
-def get_unique_col_values(df, display_nb_cols=10):
+def get_unique_col_values(df):
     """
     Method returns a DataFrame with columns and their unique values.
     Use for non-numeric columns only.
