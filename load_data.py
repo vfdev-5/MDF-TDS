@@ -84,7 +84,11 @@ for index, s in enumerate(substances):
         for g in groups:
             repl = g.replace(',', ' ')
             s = s.replace(g, repl)            
-                                          
+                                     
+                    
+    # remove multiple spaces
+    s = re.sub(r'\s+', ' ', s)
+                
     BIG.loc[index, 'substances'] = s
 
     
@@ -100,7 +104,10 @@ BIG['substances'] = substances.str.replace(' DU', '')
 
 # custom replace
 BIG['substances'] = substances.str.replace('ISPAGHUL GRAINE, TEGUMENT', 'ISPAGHUL GRAINE TEGUMENT')
-    
+
+# custom replace
+BIG['substances'] = substances.str.replace('UREE \[13C\]', 'UREE')
+
 
     
     
