@@ -13,7 +13,8 @@ def drop_const_cols(df):
     """
     Method to remove constant columns
     """
-    return df.loc[:, (df != df.ix[0]).any()]
+    indices = df.index
+    return df.loc[:, (df != df.ix[indices[0]]).any()]
 
 
 def get_unique_noconst(df, col_subset=None, verbose=False):
