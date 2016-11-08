@@ -7,7 +7,7 @@
      - PROCESSED_BIG : processed data from BIG
          - unique, no const columns, 
          
-         - columns : dropped 'libelle', 'id' and 'voie admin' dummified, appended 'logprix'
+         - columns : 'id' dropped and 'libelle', 'voie admin' dummified, 'logprix' appended
          
            u'agrement col', u'date amm annee', u'date declar annee', u'etat commerc', u'forme pharma', u'libelle_ampoule',
            u'libelle_capsule', u'libelle_comprime', u'libelle_film', u'libelle_flacon', u'libelle_gelule', u'libelle_pilulier',
@@ -43,7 +43,7 @@ from load_data import train, test, BIG, TRAIN, TEST, SOURCE
 from common.preprocessing_helper import get_unique_noconst, split_series_values, get_unique_col_values, get_numeric_nonnumeric_cols
 
 # Remove some useless columns
-PROCESSED_BIG = BIG.drop(['libelle', 'id'], axis=1)
+PROCESSED_BIG = BIG.drop(['id'], axis=1)
 
 # Check for dupicate rows and lets look at the columns with only one unique value.
 # without targets (labels)
@@ -57,7 +57,7 @@ TARGET_COLUMNS = ['prix', 'logprix']
 num_cols, nonnum_cols = get_numeric_nonnumeric_cols(PROCESSED_BIG)
 
 # Encode categorical features
-df = PROCESSED_BIG[nonnum_cols].drop(['substances', 'voies admin', SOURCE], axis=1)
+df = PROCESSED_BIG[nonnum_cols].drop(['libelle', 'substances', 'voies admin', SOURCE], axis=1)
 for c in df.columns:
     le = LabelEncoder()    
     le.fit(df[c])

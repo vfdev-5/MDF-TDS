@@ -27,6 +27,15 @@ train[SOURCE] = TRAIN
 test[SOURCE] = TEST
 BIG = pd.concat([train, test], ignore_index=True)
 
+### Fix 'libelle' data : 
+libelle = BIG['libelle']
+BIG['libelle'] = libelle.str.replace(u'é', 'e')
+BIG['libelle'] = libelle.str.replace(u'ê', 'e')
+BIG['libelle'] = libelle.str.replace(u'è', 'e')
+BIG['libelle'] = libelle.str.replace(u'ï', 'i')
+BIG['libelle'] = libelle.str.replace(u'à', 'a')
+BIG['libelle'] = libelle.str.replace('\(s\)', '')
+
 ### Fix 'substances' data : 
 
 
