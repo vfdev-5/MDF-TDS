@@ -28,16 +28,64 @@ test[SOURCE] = TEST
 BIG = pd.concat([train, test], ignore_index=True)
 
 ### Fix 'libelle' data : 
-libelle = BIG['libelle']
-BIG['libelle'] = libelle.str.replace(u'é', 'e')
-BIG['libelle'] = libelle.str.replace(u'ê', 'e')
-BIG['libelle'] = libelle.str.replace(u'è', 'e')
-BIG['libelle'] = libelle.str.replace(u'ï', 'i')
-BIG['libelle'] = libelle.str.replace(u'à', 'a')
-BIG['libelle'] = libelle.str.replace('\(s\)', '')
+BIG['libelle'] = BIG['libelle'].str.replace(u'é', 'e')
+BIG['libelle'] = BIG['libelle'].str.replace(u'ê', 'e')
+BIG['libelle'] = BIG['libelle'].str.replace(u'è', 'e')
+BIG['libelle'] = BIG['libelle'].str.replace(u'ï', 'i')
+BIG['libelle'] = BIG['libelle'].str.replace(u'î', 'i')
+BIG['libelle'] = BIG['libelle'].str.replace(u'à', 'a')
+BIG['libelle'] = BIG['libelle'].str.replace(u'â', 'a')
+BIG['libelle'] = BIG['libelle'].str.replace(u'\x92', ' ')
+
+# Remove pluriel '(s)', e.g. comprime(s) -> comprime
+BIG['libelle'] = BIG['libelle'].str.replace('\(s\)', '')
+
+# Remove pluriel for words : e.g. comprimes -> comprime
+BIG['libelle'] = BIG['libelle'].str.replace('aiguiilles', 'aiguille')
+BIG['libelle'] = BIG['libelle'].str.replace('aiguilles', 'aiguille')
+BIG['libelle'] = BIG['libelle'].str.replace('comprimes', 'comprime')
+BIG['libelle'] = BIG['libelle'].str.replace('dispositifs', 'dispositif')
+BIG['libelle'] = BIG['libelle'].str.replace('doses', 'dose')
+BIG['libelle'] = BIG['libelle'].str.replace('mlavec', 'ml avec')
+BIG['libelle'] = BIG['libelle'].str.replace('gelules', 'gelule')
+BIG['libelle'] = BIG['libelle'].str.replace('plaquettes', 'plaquette')
+BIG['libelle'] = BIG['libelle'].str.replace(r'^aquette', 'plaquette')
+BIG['libelle'] = BIG['libelle'].str.replace('stylos', 'stylo')
+BIG['libelle'] = BIG['libelle'].str.replace('sacs', 'sac')
+BIG['libelle'] = BIG['libelle'].str.replace('spatules', 'spatule')
+BIG['libelle'] = BIG['libelle'].str.replace('seringues', 'seringue')
+BIG['libelle'] = BIG['libelle'].str.replace('pipettes', 'pipette')
+BIG['libelle'] = BIG['libelle'].str.replace('poches', 'poche')
+BIG['libelle'] = BIG['libelle'].str.replace('pansements', 'pansement')
+BIG['libelle'] = BIG['libelle'].str.replace('tubes', 'tube')
+BIG['libelle'] = BIG['libelle'].str.replace('cuilleres-mesure', 'cuillere')
+BIG['libelle'] = BIG['libelle'].str.replace('cuillere-mesure', 'cuillere')
+BIG['libelle'] = BIG['libelle'].str.replace(r'a \d compartiments', 'a compartiments')
+BIG['libelle'] = BIG['libelle'].str.replace('microgrammes', 'mg')
+BIG['libelle'] = BIG['libelle'].str.replace('mL', 'ml') 
+BIG['libelle'] = BIG['libelle'].str.replace(' un ', ' 1 ') 
+BIG['libelle'] = BIG['libelle'].str.replace(' deux ', ' 2 ') 
+BIG['libelle'] = BIG['libelle'].str.replace('pour chacun', '') 
+BIG['libelle'] = BIG['libelle'].str.replace('avec ou sans', '') 
+BIG['libelle'] = BIG['libelle'].str.replace('systeme de recuperation', 'systeme_de_recuperation') 
+BIG['libelle'] = BIG['libelle'].str.replace('systeme de securite', 'systeme_de_securite') 
+BIG['libelle'] = BIG['libelle'].str.replace('fermeture de securite enfant', 'fermeture')
+BIG['libelle'] = BIG['libelle'].str.replace('materiel de perfusion', 'materiel_de_perfusion') 
+BIG['libelle'] = BIG['libelle'].str.replace('Trousse de ', '') 
+BIG['libelle'] = BIG['libelle'].str.replace('necessaire d administration', '1 seringue et 1 catheter') 
+BIG['libelle'] = BIG['libelle'].str.replace('site d\'addition', 'site_d_addition') 
+BIG['libelle'] = BIG['libelle'].str.replace('site d\'injection', 'site_d_injection') 
+BIG['libelle'] = BIG['libelle'].str.replace('capuchon tip-cap', 'tip-cap') 
+
+BIG.ix[11908, 6] = BIG.ix[11908, 6].replace('25 G, 5/8', '25G, 5/8')
+BIG.ix[7336, 6] = u'1 boite de 4 poche a trois compartiments (Polypropylene-co-ethylene) de 1026 ml'
+BIG.ix[7804, 6] = u'1 boite de 4 poche a trois compartiments (Polypropylene-co-ethylene) de 2053 ml'
+BIG.ix[9832, 6] = u'1 boite de 4 poche a trois compartiments (Polypropylene-co-ethylene) de 1540 ml'
+BIG.ix[11410, 6] = u'1 flacon en verre de 150 ml avec 1 seringue avec 1 catheter'
+BIG.ix[11247, 6] = u'1 flacon en verre jaune(brun) - 1 flacon en verre de 1 ml avec 1 aiguille'
+
 
 ### Fix 'substances' data : 
-
 
 #
 # Problem 0 : Replace 'É', 'È', 'Ï', 'Ê', 'À'
